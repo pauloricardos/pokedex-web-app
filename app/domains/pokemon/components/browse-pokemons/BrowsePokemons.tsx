@@ -1,59 +1,38 @@
+import { type PropsWithChildren } from 'react';
+import { PokemonCard } from '~/domains/pokemon/components/pokemon-card/PokemonCard';
 import { SearchPokemonInput } from '../search-pokemon-input/SearchPokemonInput';
+import type { Pokemon } from '~/domains/pokemon/types.d';
+import { Footer } from '~/components/Footer';
+import { InfiniteScroller } from '~/components';
+import { useBrowsePokemons } from './useBrowsePokemons';
 
-export const BrowsePokemons = (): React.ReactNode => {
+export const BrowsePokemons = (): JSX.Element => {
+  const { pokemons, loadNext, fetcher } = useBrowsePokemons();
+
   return (
     <>
-      <main className="w-full h-screen p-8">
+      <main className="w-full p-8 flex justify-center flex-col">
         <SearchPokemonInput />
-        <div className="h-full">
-          <div className="w-1/5 min-w-max flex flex-row-reverse bg-grass-type-secondary rounded-2xl">
-            <div className="p-3 flex justify-center items-start bg-grass-type rounded-xl">
-              <div className='flex'>
-                <img
-                  src="/images/grass-type-outline.png"
-                  className="bg-grass-type relative left-5"
-                  alt="grass-type icon"
-                />
-                <img src="/images/bulbasaur.png" className='relative right-2/4' alt="" />
-              </div>
-            </div>
-            <div className="h-full w-full bg-grass-type-secondary rounded-tl-xl rounded-bl-xl p-2 flex flex-col">
-              <p className="text-xs font-semibold text-black-gray-scale">
-                0001
-              </p>
-              <p className="text-xl font-semibold text-black-gray-scale mb-3">
-                Bulbasaur
-              </p>
-              <div className="flex w-5/6">
-                <div className="p-1 w-1/3 bg-grass-type rounded-lg mr-2 flex flex-row">
-                  <div className="flex bg-white rounded-xl w-1/4 mr-2">
-                    <img
-                      src="/images/grass-type.png"
-                      className="w-11/12 p-1"
-                      alt=""
-                    />
-                  </div>
-                  <p className="text-xs font-medium text-justify w-3/5 p-1">
-                    Grass
-                  </p>
-                </div>
-                <div className="p-1 w-1/3 bg-poison-type rounded-lg mr-2 flex flex-row">
-                  <div className="flex bg-white rounded-xl w-1/4 mr-2">
-                    <img
-                      src="/images/poison.png"
-                      className="w-11/12 p-1"
-                      alt=""
-                    />
-                  </div>
-                  <p className="text-xs font-medium text-justify w-3/5 p-1">
-                    Poison
-                  </p>
-                </div>
-              </div>
-            </div>
+        <InfiniteScroller
+          loadNext={loadNext}
+          loading={fetcher.state === 'loading'}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+            {pokemons.map((pokemon: Pokemon) => (
+              <PokemonCardContainer key={pokemon.id}>
+                <PokemonCard pokemon={pokemon} />
+              </PokemonCardContainer>
+            ))}
           </div>
-        </div>
+        </InfiniteScroller>
       </main>
+      <Footer />
     </>
   );
+};
+
+const PokemonCardContainer: React.FC<PropsWithChildren> = ({
+  children,
+}): JSX.Element => {
+  return <div className="p-4">{children}</div>;
 };

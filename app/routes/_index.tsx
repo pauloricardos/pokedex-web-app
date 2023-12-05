@@ -1,41 +1,40 @@
-import type { MetaFunction } from "@remix-run/node";
+import { type MetaFunction, defer, type LoaderFunctionArgs } from '@remix-run/node';
+import { Await, useLoaderData } from '@remix-run/react';
+import { Suspense } from 'react';
+import { retrievePokemons } from '~/api/services/retrievePokemons.server';
+import { BrowsePokemons } from '~/domains/pokemon/components';
+import { FeatureToggleProvider, featureToggleConfig } from '~/feature-toggles';
 
 export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
+  return [{ title: 'Pokedex' }, { name: 'Pokemon', content: 'Pokemon' }];
+};
+
+export const loader = ({ request }: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
+  const pageSize = url.searchParams.get("pageSize") || '200';
+
+  const pokemonsPromise = retrievePokemons({
+    page: '0',
+    pageSize,
+  });
+
+  return defer({
+    result: pokemonsPromise,
+  });
 };
 
 export default function Index() {
+  const { result } = useLoaderData<typeof loader>();
+
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
-    </div>
+    <>
+      <FeatureToggleProvider value={featureToggleConfig}>
+        <Suspense fallback="Loading...">
+          <Await resolve={result}>
+            <BrowsePokemons />
+          </Await>
+        </Suspense>
+      </FeatureToggleProvider>
+    </>
   );
 }
