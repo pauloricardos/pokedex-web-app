@@ -15,7 +15,11 @@ export type FindAllPokemonsParams = {
   pageSize: string;
 };
 
+export type FindAllPokemonsPaginationResult = FindAllPokemonsParams & {
+  hasNext: boolean;
+};
+
 export type PaginatedPokemons = {
   pokemons: Pokemons,
-  pagination: FindAllPokemonsParams;
+  pagination: FindAllPokemonsPaginationResult;
 };

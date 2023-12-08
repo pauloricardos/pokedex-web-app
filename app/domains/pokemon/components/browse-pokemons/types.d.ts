@@ -1,4 +1,3 @@
-import type { Fetcher } from '@remix-run/react';
 import type { PaginatedPokemons, Pokemons } from '../../types';
 
 export type BrowsePokemonsProps = {
@@ -12,7 +11,7 @@ export type UseFetcherResult = {
 export type UseBrowsePokemonsResult = {
   pokemons: Pokemons;
   loadNext: () => void;
-  fetcher: Fetcher<UseFetcherResult>;
+  isLoading: boolean;
 };
 
 export type PaginationParams = {
