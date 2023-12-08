@@ -16,7 +16,7 @@
       "~/*": ["./app/*"],
     },
     "skipLibCheck": true,
-    "types": ["bun-types", "web"],
+    "types": ["bun-types", "web", "@testing-library/jest-dom/vitest"],
 
     // Remix takes care of building everything in `remix build`.
     "noEmit": true
