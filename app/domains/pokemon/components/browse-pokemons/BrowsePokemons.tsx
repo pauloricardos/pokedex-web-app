@@ -3,11 +3,11 @@ import { PokemonCard } from '~/domains/pokemon/components/pokemon-card/PokemonCa
 import { SearchPokemonInput } from '../search-pokemon-input/SearchPokemonInput';
 import type { Pokemon } from '~/domains/pokemon/types.d';
 import { Footer } from '~/components/Footer';
-import { InfiniteScroller } from '~/components';
+import { InfiniteScroller, LoadingSpinner } from '~/components';
 import { useBrowsePokemons } from './useBrowsePokemons';
 
 export const BrowsePokemons = (): JSX.Element => {
-  const { pokemons, loadNext, fetcher } = useBrowsePokemons();
+  const { pokemons, loadNext, isLoading } = useBrowsePokemons();
 
   return (
     <>
@@ -15,7 +15,7 @@ export const BrowsePokemons = (): JSX.Element => {
         <SearchPokemonInput />
         <InfiniteScroller
           loadNext={loadNext}
-          loading={fetcher.state === 'loading'}
+          loading={isLoading}
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
             {pokemons.map((pokemon: Pokemon) => (
@@ -24,6 +24,7 @@ export const BrowsePokemons = (): JSX.Element => {
               </PokemonCardContainer>
             ))}
           </div>
+          {isLoading && <LoadingSpinner />}
         </InfiniteScroller>
       </main>
       <Footer />

@@ -1,7 +1,12 @@
-import { type MetaFunction, defer, type LoaderFunctionArgs } from '@remix-run/node';
+import {
+  type MetaFunction,
+  defer,
+  type LoaderFunctionArgs,
+} from '@remix-run/node';
 import { Await, useLoaderData } from '@remix-run/react';
 import { Suspense } from 'react';
 import { retrievePokemons } from '~/api/services/retrievePokemons.server';
+import { LoadingSpinner } from '~/components';
 import { BrowsePokemons } from '~/domains/pokemon/components';
 import { FeatureToggleProvider, featureToggleConfig } from '~/feature-toggles';
 
@@ -11,7 +16,7 @@ export const meta: MetaFunction = () => {
 
 export const loader = ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
-  const pageSize = url.searchParams.get("pageSize") || '200';
+  const pageSize = url.searchParams.get('pageSize') || '200';
 
   const pokemonsPromise = retrievePokemons({
     page: '0',
@@ -29,7 +34,13 @@ export default function Index() {
   return (
     <>
       <FeatureToggleProvider value={featureToggleConfig}>
-        <Suspense fallback="Loading...">
+        <Suspense
+          fallback={
+            <div className="h-80 flex justify-center">
+              <LoadingSpinner />
+            </div>
+          }
+        >
           <Await resolve={result}>
             <BrowsePokemons />
           </Await>
