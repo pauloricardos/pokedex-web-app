@@ -19,8 +19,7 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
   const pageSize = url.searchParams.get('pageSize') || '200';
 
   const pokemonsPromise = retrievePokemons({
-    page: '0',
-    pageSize,
+    pageSize: Number(pageSize),
   });
 
   return defer({

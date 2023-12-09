@@ -1,10 +1,7 @@
 import { type Fetcher, useAsyncValue, useFetcher } from '@remix-run/react';
 import { useState, useEffect } from 'react';
 import type { PaginatedPokemons, Pokemon } from '../../types';
-import type {
-  UseBrowsePokemonsResult,
-  UseFetcherResult,
-} from './types';
+import type { UseBrowsePokemonsResult, UseFetcherResult } from './types';
 import { isNil } from 'ramda';
 
 const pokemonsToFetch = 300;
@@ -23,7 +20,7 @@ export const useBrowsePokemons = (): UseBrowsePokemonsResult => {
   const isLoading = fetcher.state === 'loading';
 
   useEffect(() => {
-    if (!fetcher.data || fetcher.state === 'loading') {
+    if (!fetcher.data || isLoading) {
       return;
     }
 
@@ -32,7 +29,7 @@ export const useBrowsePokemons = (): UseBrowsePokemonsResult => {
 
       setPokemons(newPokemons);
     }
-  }, [fetcher.data, fetcher.state, pokemons]);
+  }, [fetcher.data, isLoading, pokemons]);
 
   const loadNext = () => {
     const query = mountQuery(fetcher);
@@ -43,20 +40,18 @@ export const useBrowsePokemons = (): UseBrowsePokemonsResult => {
     ) {
       fetcher.load(query);
     }
-
-    return;
   };
 
   const mountQuery = (fetcher: Fetcher) => {
     const pageSize = getPageSizeParams(fetcher);
 
-    return `?index&pageSize=${String(pageSize)}`;
+    return `?index&pageSize=${pageSize}`;
   };
 
   const getPageSizeParams = (fetcher: Fetcher): number => {
     const pageSize = fetcher.data
-      ? Number(fetcher.data.result.pagination.pageSize) + pokemonsToFetch
-      : Number(paginatedPokemons.pagination.pageSize) + pokemonsToFetch;
+      ? fetcher.data.result.pagination.pageSize + pokemonsToFetch
+      : paginatedPokemons.pagination.pageSize + pokemonsToFetch;
 
     return pageSize;
   };

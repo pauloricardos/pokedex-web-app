@@ -11,15 +11,14 @@ export type Pokemon = {
 export type Pokemons = Array<Pokemon>;
 
 export type FindAllPokemonsParams = {
-  page: string;
-  pageSize: string;
+  pageSize: number;
 };
 
-export type FindAllPokemonsPaginationResult = FindAllPokemonsParams & {
+export type FindAllPokemonsParamsResult = FindAllPokemonsParams & {
   hasNext: boolean;
 };
 
 export type PaginatedPokemons = {
   pokemons: Pokemons,
-  pagination: FindAllPokemonsPaginationResult;
+  pagination: FindAllPokemonsParamsResult;
 };
