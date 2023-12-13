@@ -3,10 +3,13 @@ import {
   defer,
   type LoaderFunctionArgs,
 } from '@remix-run/node';
-import { Await, useLoaderData } from '@remix-run/react';
+import {
+  Await,
+  useLoaderData,
+} from '@remix-run/react';
 import { Suspense } from 'react';
-import { retrievePokemons } from '~/api/services/retrievePokemons.server';
-import { LoadingSpinner } from '~/components';
+import { retrievePokemons } from '~/api/services';
+import { ErrorScreen, LoadingSpinner } from '~/components';
 import { BrowsePokemons } from '~/domains/pokemon/components';
 import { FeatureToggleProvider, featureToggleConfig } from '~/feature-toggles';
 
@@ -40,7 +43,7 @@ export default function Index() {
             </div>
           }
         >
-          <Await resolve={result}>
+          <Await resolve={result} errorElement={<ErrorScreen />}>
             <BrowsePokemons />
           </Await>
         </Suspense>

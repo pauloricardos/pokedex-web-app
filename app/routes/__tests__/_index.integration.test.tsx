@@ -13,7 +13,7 @@ describe('Pokedex index page', () => {
         Component: Index,
         loader() {
           return defer({
-            data: retrievePokemons({ page: '0', pageSize: '53' }),
+            data: retrievePokemons({ pageSize: 151 }),
           });
         },
       },
