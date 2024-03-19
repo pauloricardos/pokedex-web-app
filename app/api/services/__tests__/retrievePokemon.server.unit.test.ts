@@ -15,7 +15,7 @@ describe('retrievePokemons', () => {
 
       await retrievePokemons({ pageSize: 1 });
 
-      expect(httpClientMocked.get).toHaveBeenCalledWith('/v1/pokemons', {
+      expect(httpClientMocked.get).toHaveBeenCalledWith('/pokemons', {
         params: {
           pageSize: 1,
         },

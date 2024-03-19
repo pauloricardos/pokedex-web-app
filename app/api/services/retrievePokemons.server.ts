@@ -9,7 +9,7 @@ export const retrievePokemons = async ({
 }: FindAllPokemonsParams): Promise<PaginatedPokemons> => {
   const httpClient = new HttpClient();
 
-  const response: PaginatedPokemons = await httpClient.get('/v1/pokemons', {
+  const response: PaginatedPokemons = await httpClient.get('/pokemons', {
     params: {
       pageSize,
     },

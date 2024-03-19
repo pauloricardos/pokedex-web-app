@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 class HttpClient {
-  private baseURL: string = 'http://localhost:3001/api';
+  private baseURL: string = `${process.env.API_URL}/v1`;
 
   async get<T>(url: string, config: AxiosRequestConfig = {}): Promise<T> {
     try {
