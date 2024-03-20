@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createRemixStub } from '@remix-run/testing';
 import Index from '../_index';
-import { defer } from '@remix-run/node';
+import { defer } from '@vercel/remix';
 import { retrievePokemons } from '~/api/services/retrievePokemons.server';
 import { render, screen, waitFor } from '~/tests/helpers/test-utils';
 

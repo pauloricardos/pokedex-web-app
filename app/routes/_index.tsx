@@ -2,7 +2,7 @@ import {
   type MetaFunction,
   defer,
   type LoaderFunctionArgs,
-} from '@remix-run/node';
+} from '@vercel/remix';
 import {
   Await,
   useLoaderData,

@@ -16,6 +16,7 @@
     "@remix-run/node": "^2.2.0",
     "@remix-run/react": "^2.2.0",
     "@remix-run/serve": "^2.2.0",
+    "@vercel/remix": "^2.8.1-patch.2",
     "autoprefixer": "^10.4.16",
     "isbot": "^3.6.8",
     "postcss": "^8.4.31",
@@ -48,6 +49,6 @@
     "vitest": "^0.34.6"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   }
 }
